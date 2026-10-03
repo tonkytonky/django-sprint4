@@ -1,10 +1,11 @@
 from django.contrib import admin
-from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.contrib.auth.models import Group
 
 from .models import Category, Location, Post, User
 
 admin.site.unregister(User)
+
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
@@ -21,6 +22,7 @@ class UserAdmin(BaseUserAdmin):
     @admin.display(description='Постов у пользователя')
     def posts_count(self, obj):
         return obj.posts.count()
+
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
@@ -50,5 +52,6 @@ class LocationAdmin(admin.ModelAdmin):
     list_editable = ('is_published', )
     list_filter = ('created_at', )
     empty_value_display = '-пусто-'
+
 
 admin.site.unregister(Group)
