@@ -53,6 +53,22 @@ def create_post(request):
     return render(request, 'blog/create.html', {'form': form})
 
 
+@login_required
+def edit_post(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    if request.user != post.author:
+        return redirect('blog:post_detail', post_id=post.id)
+    form = PostForm(
+        request.POST or None,
+        files=request.FILES or None,
+        instance=post,
+    )
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        return redirect('blog:post_detail', post_id=post.id)
+    return render(request, 'blog/create.html', {'form': form})
+
+
 def category_posts(request, category_slug):
     category = get_object_or_404(
         Category, slug=category_slug, is_published=True
