@@ -1,3 +1,4 @@
+from blog.views import registration
 from django.contrib import admin
 from django.urls import include, path
 
@@ -7,6 +8,8 @@ handler500 = 'pages.views.server_error'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('auth/', include('django.contrib.auth.urls')),
+    path('auth/registration/', registration, name='registration'),
     path('pages/', include('pages.urls', namespace='pages')),
     path('', include('blog.urls', namespace='blog')),
 ]
