@@ -1,4 +1,7 @@
 <div class="card" style="width: 40rem;">
+  {% if post.image %}
+    <img class="card-img-top" src="{{ post.image.url }}" alt="{{ post.title }}">
+  {% endif %}
   <div class="card-body">
     <h5 class="card-title">{{ post.title }}</h5>
     <h6 class="card-subtitle mb-2 text-muted"><small>{{ post.pub_date|date:"d E Y" }} | {% if post.location %}{{ post.location.name }}{% else %}Планета Земля{% endif %}<br>

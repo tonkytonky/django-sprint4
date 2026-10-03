@@ -5,6 +5,7 @@ from django.db import models
 
 User = get_user_model()
 
+
 class Category(PublishedAndCreatedAt):
     title = models.CharField('Заголовок', max_length=FIELDS_MAX_LENGTH)
     description = models.TextField('Описание')
@@ -14,6 +15,7 @@ class Category(PublishedAndCreatedAt):
                   'латиницы, цифры, дефис и подчёркивание.',
         unique=True
     )
+
     class Meta(PublishedAndCreatedAt.Meta):
         verbose_name = 'категория'
         verbose_name_plural = 'Категории'
@@ -56,6 +58,11 @@ class Post(PublishedAndCreatedAt):
         Category, null=True,
         on_delete=models.SET_NULL,
         verbose_name='Категория'
+    )
+    image = models.ImageField(
+        'Фото',
+        upload_to='post_images',
+        blank=True
     )
 
     class Meta:
