@@ -10,8 +10,6 @@ from .models import Category, Post
 
 User = get_user_model()
 
-POSTS_PER_PAGE = 10
-
 
 def filtered_select_posts(posts):
     return posts.select_related(
@@ -23,9 +21,14 @@ def filtered_select_posts(posts):
     )
 
 
+def get_page_obj(post_list, request):
+    paginator = Paginator(post_list, POSTS_BY_PAGE)
+    return paginator.get_page(request.GET.get('page'))
+
+
 def index(request):
-    post_list = filtered_select_posts(Post.objects)[:POSTS_BY_PAGE]
-    return render(request, 'blog/index.html', {'post_list': post_list})
+    page_obj = get_page_obj(filtered_select_posts(Post.objects), request)
+    return render(request, 'blog/index.html', {'page_obj': page_obj})
 
 
 def post_detail(request, post_id):
@@ -40,9 +43,9 @@ def category_posts(request, category_slug):
     category = get_object_or_404(
         Category, slug=category_slug, is_published=True
     )
-    post_list = filtered_select_posts(category.posts)
+    page_obj = get_page_obj(filtered_select_posts(category.posts), request)
     return render(request, 'blog/category.html', {
-        'post_list': post_list,
+        'page_obj': page_obj,
         'category': category
     })
 
@@ -52,15 +55,14 @@ def registration(request):
     if request.method == 'POST' and form.is_valid():
         form.save()
         return redirect('blog:index')
-    return render(request, 'registration/registration_form.html', {'form': form})
+    return render(
+        request, 'registration/registration_form.html', {'form': form}
+    )
 
 
 def profile(request, username):
     profile_user = get_object_or_404(User, username=username)
-    post_list = profile_user.posts.all()
-    paginator = Paginator(post_list, POSTS_PER_PAGE)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+    page_obj = get_page_obj(profile_user.posts.all(), request)
     context = {
         'profile': profile_user,
         'page_obj': page_obj,
