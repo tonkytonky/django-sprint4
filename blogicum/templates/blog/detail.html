@@ -11,5 +11,16 @@
       <img class="mb-3" src="{{ post.image.url }}" alt="{{ post.title }}">
     {% endif %}
     <p>{{ post.text|linebreaksbr }}</p>
-  </article> 
+    {% if user == post.author %}
+      <div class="mb-2">
+        <a class="btn btn-sm text-muted" href="{% url 'blog:edit_post' post.id %}" role="button">
+          Отредактировать публикацию
+        </a>
+        <a class="btn btn-sm text-muted" href="{% url 'blog:delete_post' post.id %}" role="button">
+          Удалить публикацию
+        </a>
+      </div>
+    {% endif %}
+    {% include "includes/comments.html" %}
+  </article>
 {% endblock %}

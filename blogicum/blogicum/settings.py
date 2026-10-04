@@ -11,6 +11,8 @@ ALLOWED_HOSTS = ['*']
 
 CSRF_FAILURE_VIEW = 'pages.views.csrf_failure'
 
+LOGIN_URL = 'login'
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',

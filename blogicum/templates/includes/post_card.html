@@ -8,5 +8,6 @@
     От автора @{{ post.author.username }} в категории {% include "includes/category_link.html" %}</small></h6>
     <p class="card-text">{{ post.text|truncatewords:10 }}</p>
     <a href="{% url 'blog:post_detail' post.id %}" class="card-link">Читать полный текст</a>
+    <span class="text-muted">Комментарии ({{ post.comments.count }})</span>
   </div>
 </div>

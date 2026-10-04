@@ -1,8 +1,12 @@
 from django.urls import path
 
 from .views import (
+    add_comment,
     category_posts,
     create_post,
+    delete_comment,
+    delete_post,
+    edit_comment,
     edit_post,
     edit_profile,
     index,
@@ -16,6 +20,22 @@ app_name = 'blog'
 urlpatterns = [
     path('posts/create/', create_post, name='create_post'),
     path('posts/<int:post_id>/edit/', edit_post, name='edit_post'),
+    path('posts/<int:post_id>/delete/', delete_post, name='delete_post'),
+    path(
+        'posts/<int:post_id>/comment/',
+        add_comment,
+        name='add_comment'
+    ),
+    path(
+        'posts/<int:post_id>/edit_comment/<int:comment_id>/',
+        edit_comment,
+        name='edit_comment'
+    ),
+    path(
+        'posts/<int:post_id>/delete_comment/<int:comment_id>/',
+        delete_comment,
+        name='delete_comment'
+    ),
     path('posts/<int:post_id>/', post_detail, name='post_detail'),
     path('category/<slug:category_slug>/', category_posts,
          name='category_posts'),
